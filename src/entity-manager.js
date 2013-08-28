@@ -20,13 +20,7 @@ var EntityManager = {
     },
 
     removeEntity: function (entityID) {
-        if (entityID < this.activeEntityIDs.length) {
-            position.removeDataFor(entityID);
-            render.removeDataFor(entityID);
-            velocity.removeDataFor(entityID);
-            collision.removeDataFor(entityID);
-            this.activeEntityIDs[entityID] = false;
-        }
+        // future implementation
     }
 };
 
