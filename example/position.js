@@ -1,4 +1,4 @@
-var component = require('../../src/component');
+var component = require('../src/component');
 
 var Position = {
     defaults: {

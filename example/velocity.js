@@ -1,4 +1,5 @@
-var component = require('../../src/component');
+var component = require('../src/component'),
+    Position = require('./position');
 
 var Velocity = {
     defaults: {

@@ -54,7 +54,7 @@ var Component = {
     },
 
     _process: function () {
-        if (!this.process) return;
+        if (!this.update) return;
         var len = this._entities.length, i;
         for (i = 0; i < len; ++i) {
             if (this.update) this.update(this._entities[i]);
