@@ -1,5 +1,4 @@
-var componentList = {},
-    undefined;
+var componentList = {};
 
 // lite.component
 module.exports = function(name, onset) {

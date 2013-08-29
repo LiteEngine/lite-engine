@@ -1,8 +1,7 @@
-var systemList = {},
-    undefined;
+var systemList = {};
 
 // lite.system
-module.exports = function(name, process, priority) {
+module.exports = function(name, process, priority, isRenderer) {
     var key, sys;
 
     name = name.toLowerCase();
