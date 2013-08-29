@@ -1,5 +1,4 @@
-#Lite Game Engine
-[![experimental](http://hughsk.github.io/stability-badges/dist/experimental.svg)](http://github.com/hughsk/stability-badges)
+#Lite Game Engine [![NPM version](https://badge.fury.io/js/lite-engine.png)](http://badge.fury.io/js/lite-engine)
 
 Based on: http://entity-systems.wikidot.com/fast-entity-component-system
 
