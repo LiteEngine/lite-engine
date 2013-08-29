@@ -1,84 +1,60 @@
-var undef;
+var componentList = {},
+    undefined;
 
-Object.prototype.extend = function (obj) {
-    var key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key) && key !== 'init') {
-            this[key] = obj[key];
+// lite.component
+module.exports = function(name, onset) {
+    var key, comp;
+
+    name = name.toLowerCase();
+    comp = componentList[name];
+
+    // query for components
+    if (arguments.length === 1) {
+        return comp;
+    }
+
+    if (typeof comp !== 'undefined') {
+        throw 'component named' + name + 'already defined.'
+    } else {
+        componentList[name] = comp = {
+            onset: onset
+        };
+    }
+
+    for (key in Component) {
+        if (Component.hasOwnProperty(key)) {
+            comp[key] = Component[key];
         }
     }
-    if (typeof obj.init === 'function') obj.init.call(this);
-};
+    // init
+    comp._values = {};
+
+    return comp;
+}
 
 var Component = {
-    _entities: undef,
-    _values: undef,
+    _values: null,
 
-    init: function () {
-        this._entities = [];
-        this._values = {};
-    },
-
-    // @param callOnSet [default=true]
-    set: function (entityID, key, value, callOnSet) {
-        if (this._entities.indexOf(entityID) === -1) {
-            this._entities.push(entityID);
-            this._values[entityID] = {};
-
-            // set default component data
-            if (this.defaults) {
-                for (var k in this.defaults) {
-                    if (k !== key) {
-                        this._values[entityID][k] = this.defaults[k];
-                    }
-                }
-            }
-        }
-        this._values[entityID][key] = value;
-        if (callOnSet !== false && typeof this.onset === 'function') this.onset(entityID, key, value);
+    set: function (entityID, key, value) {
+        var values = this._values[entityID] = this._values[entityID] || {};
+        values[key] = value;
+        if (typeof this.onset === 'function') this.onset(entityID, key, value);
     },
 
     get: function (entityID, key) {
-        if (this._entities.indexOf(entityID) === -1) {
-            return undef;
+        var values = this._values[entityID];
+        if (typeof values === 'undefined') {
+            // return undefined
+            return values;
         }
-        return this._values[entityID][key];
-    },
-
-    unset: function (entityID) {
-        var i = this._entities.indexOf(entityID);
-        if (i !== -1) {
-            delete this._values[entityID];
-            this._entities.splice(i, 1);
-        }
+        return values[key];
     },
 
     _process: function () {
         if (!this.update) return;
         var len = this._entities.length, i;
         for (i = 0; i < len; ++i) {
-            if (this.update) this.update(this._entities[i]);
+            if this.update(this._entities[i]);
         }
     }
-
-    /* to implement
-    
-    // default values of component
-    defaults: {
-        key1 : value1,
-        key2 : value2,
-        ...
-        keyN : valueN
-    }
-    
-    update: function(entityID) {
-        // do something every game tick
-    }
-    
-    onset: function(entityID, key, value) {
-        // do something every time that a value is setted
-    }
-    */
 };
-
-module.exports = Component;

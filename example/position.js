@@ -1,11 +1,5 @@
 var component = require('../src/component');
 
-var Position = {
-    defaults: {
-        x: 0,
-        y: 0
-    }
-};
-Position.extend(component);
+var Position = lite.component('position', null);
 
 module.exports = Position;

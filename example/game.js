@@ -7,11 +7,11 @@ var EntityManager = require('../src/entity-manager'),
 
 function loop() {
     game.stats.begin();
-    Velocity._process();
-    Collision._process();
+    Moviment._processAll();
+    Collision.system._processAll();
     // clear game screen 
     game.ctx.clearRect(0, 0, game.width, game.height);
-    Render._process();
+    Render._processAll();
     game.stats.end();
     window.requestAnimationFrame(loop);
 }
