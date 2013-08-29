@@ -1,24 +1,14 @@
-var lite = require('../'),
+var lite = require('../../'),
 	Position = require('./position'),
-	Velocity = require('./velocity'),
+	Velocity = require('./velocity-and-moviment').velocity,
 	Collision = {};
-
-Collision.component = lite.component('collision', function(eid, key, val) {
-	if (key === 'collidable') {
-		if (val === true) {
-			Collision.system.add(eid);
-		} else {
-			Collision.system.remove(eid);
-		}
-	}
-});
 
 Collision.system = lite.system('collision manager', function (eid) {
 	var px = Position.get(eid, 'x'),
 		py = Position.get(eid, 'y'),
 		vx = Velocity.get(eid, 'x'),
 		vy = Velocity.get(eid, 'y'),
-		radius = this.get(eid, 'radius'),
+		radius = Collision.component.get(eid, 'radius'),
 		collision = false;
 
 	// Check for collision with the screen edge (left and right)
@@ -55,3 +45,15 @@ Collision.system = lite.system('collision manager', function (eid) {
 		Velocity.set(eid, 'y', vy, false);
 	}
 }, lite.PRIORITY.NORMAL);
+
+Collision.component = lite.component('collision', function(eid, key, val) {
+	if (key === 'collidable') {
+		if (val === true) {
+			Collision.system.add(eid);
+		} else {
+			Collision.system.remove(eid);
+		}
+	}
+});
+
+module.exports = Collision;

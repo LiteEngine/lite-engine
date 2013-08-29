@@ -6,7 +6,7 @@ module.exports = function(name, process, priority) {
     var key, sys;
 
     name = name.toLowerCase();
-    sys = componentList[name];
+    sys = systemList[name];
 
     // query for systems
     if (arguments.length === 1) {
@@ -32,12 +32,12 @@ module.exports = function(name, process, priority) {
     return sys;
 }
 
-var system = {
+var System = {
     _entities: null,
 
     add: function (entityID) {
         var ents = this._entities;
-        if (ents.indexOf(entityID) !== -1) {
+        if (ents.indexOf(entityID) === -1) {
             ents.push(entityID);
         }
     },
@@ -62,7 +62,7 @@ var system = {
         var len = this._entities.length, i;
         if (len === 0) return;
         for (i = 0; i < len; ++i) {
-            if this.process(this._entities[i]);
+            this.process(this._entities[i]);
         }
     }
 };

@@ -1,4 +1,4 @@
-var component = require('../src/component');
+var lite = require('../../');
 
 var Position = lite.component('position', null);
 

@@ -43,18 +43,6 @@ var Component = {
 
     get: function (entityID, key) {
         var values = this._values[entityID];
-        if (typeof values === 'undefined') {
-            // return undefined
-            return values;
-        }
-        return values[key];
-    },
-
-    _process: function () {
-        if (!this.update) return;
-        var len = this._entities.length, i;
-        for (i = 0; i < len; ++i) {
-            if this.update(this._entities[i]);
-        }
+        return typeof values !== 'undefined' ? values[key] : null;
     }
 };
