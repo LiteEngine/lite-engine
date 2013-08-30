@@ -19,6 +19,9 @@
     "component",
     "system"
   ],
+  "dependencies": {
+    "fixed-game-loop": "0.1.0"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/luizbills/lite-engine/issues"
