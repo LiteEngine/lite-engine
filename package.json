@@ -22,7 +22,7 @@
   "dependencies": {
     "fixed-game-loop": "0.1.0"
   },
-  "license": "MIT",
+  "license": "CC0 1.0",
   "bugs": {
     "url": "https://github.com/luizbills/lite-engine/issues"
   }
