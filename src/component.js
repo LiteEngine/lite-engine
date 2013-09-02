@@ -1,47 +1,35 @@
-var componentList = {};
+var GUID = require('./GUID'),
+  Table = require('./table'),
+
+  lists = require('./lists'),
+  ComponentList = lists.ComponentList,
+  EntityList = lists.EntityList;
 
 // lite.component
-module.exports = function(name, onset) {
-    var key, comp;
+module.exports = function (name) {
+  var comp;
 
-    name = name.toLowerCase();
-    comp = componentList[name];
+  name = name.toLowerCase();
+  comp = ComponentList.get(name);
 
-    // query for components
-    if (arguments.length === 1) {
-        return comp;
-    }
+  if (comp === null) {
+    ComponentList.set(name, new Component());
+    comp = ComponentList.get(name);
+  }
 
-    if (typeof comp !== 'undefined') {
-        throw 'component named' + name + 'already defined.'
-    } else {
-        componentList[name] = comp = {
-            onset: onset
-        };
-    }
-
-    for (key in Component) {
-        if (Component.hasOwnProperty(key)) {
-            comp[key] = Component[key];
-        }
-    }
-    // init
-    comp._values = {};
-
-    return comp;
-}
-
-var Component = {
-    _values: null,
-
-    set: function (entityID, key, value) {
-        var values = this._values[entityID] = this._values[entityID] || {};
-        values[key] = value;
-        if (typeof this.onset === 'function') this.onset(entityID, key, value);
-    },
-
-    get: function (entityID, key) {
-        var values = this._values[entityID];
-        return typeof values !== 'undefined' ? values[key] : null;
-    }
+  return comp;
 };
+
+function Component () {
+  this.values = new Table();
+};
+
+Component.prototype = {
+  set: function (entityID, key, value) {
+    this.values.set(entityID + " " + key, value);
+  },
+
+  get: function (entityID, key) {
+    return this.values.get(entityID + " " + key);
+  }
+}
