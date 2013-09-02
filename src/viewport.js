@@ -11,7 +11,7 @@ module.exports = {
     }
 
     style = element.style;
-    style.overFlow = 'hidden';
+    style.overflow = 'hidden';
     style.width = width + 'px';
     style.height = height + 'px';
 
