@@ -18,7 +18,7 @@ var entId = lite.component.create('transparent', {
 /*
  * Entity Methods
  */
- // create an entity
+// create an entity
 // returns the entity id (integer) and add component "circle"
 // the first parameter is an array with all initial components
 var entId = lite.entity.create(['circle']);
@@ -125,7 +125,6 @@ lite.time.elapsed
 /*
  * Library Entension
  */
- 
 // sample extension
 lite.extension.set('globals', {
   _values: {},
@@ -142,5 +141,6 @@ lite.extension.set('globals', {
 var globals = lite.extension.get('globals');
 
 globals.set('2PI', 2 * Math.PI);
+globals.get('2PI'); // => 6.283185307179586
 
 ```
