@@ -10,13 +10,13 @@ lite.component.create('circle', {
 });
 
 // another component
-lite.component.create('transparent', {
+lite.component.create('alpha', {
   // default properties
-  alpha: 1
+  value: 1
 });
 
 // or
-lite.component.create('velocity', function() {
+lite.component.create('position', function() {
 	var comp = new Vector();
 	comp.x = 10;
 	comp.y = 20;
@@ -40,27 +40,24 @@ var cond = lite.entity.destroy(entId);
 var ents = lite.entity.select('*');
 
 // returns all entities with the components of array
-var ents = lite.entity.select(['circle', 'transparent']);
+var ents = lite.entity.select(['circle', 'alpha']);
 
 /*
  * Component Methods
  */
 // first, get the component
-var Transparent = lite.component.get('transparent');
+var Alpha = lite.component.get('alpha');
 
 // add the component to an entity
 // the first parameter can be a array with many ids
-Transparent.add(entId);
+Alpha.add(entId);
 
 // change a property of entity
 // the first parameter can be a array with many ids
-Transparent.set(entId, 'alpha', 0.5); // 50% transparent
-
-// returns a array with all entities that have this component
-Transparent.getEntities();
+Alpha.set(entId, 'value', 0.5); // 50% alpha
 
 // remove a component
-Transparent.remove(entId);
+Alpha.remove(entId);
 
 /*
  * Systems
@@ -70,12 +67,15 @@ Transparent.remove(entId);
 lite.system.create('Renderer', {
 
   priority: {
-    update: 0,
-    render: lite.PRIORITY.HIGH,
+    update: lite.system.PRIORITY.NORMAL,
+    render: lite.system.PRIORITY.HIGH,
   },
 
   filter: {
-    'circle': true
+    'circle': true,
+    'position': function(entityId) {
+      return true;
+    }
   },
   
   init: function(entityId) {
@@ -87,26 +87,57 @@ lite.system.create('Renderer', {
   },
   
   update: function(entityId) {
-    // do nothing
+    // this is called before all render methods
   },
   
   render: function(entityId) {
-    var Circle = lite.component.get('circle'), 
-      px = Circle.get(entityId, 'x'),
-			py = Position.get(entityId, 'y'),
-			radius = Collision.get(entityId, 'radius');
+    var Circle = lite.component.get('circle'),
+      Position = lite.component.get('position'),
+      Alpha = lite.component.get('alpha'),
 
-    // draw a circle
+      pos = Position.get(entityId), // remember, Component position comp is a vector
+			radius = Circle.get(entityId, 'radius'),
+			alpha = 1;
+
 		ctx.save();
-		ctx.beginPath();
-		ctx.arc(px, py, radius, 0, 2 * Math.PI);
+		
+		// optional component
+		if (Alpha.has(entityId) == true) {
+		  alpha = Alpha.get(entityId).value;
+		}
+		
+		ctx.globalAlpha = alpha;
 		ctx.fillStyle = '#FF0000';
+		ctx.beginPath();
+		ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
 		ctx.fill();
 		ctx.closePath();
 		ctx.restore();
   }
 
 });
+
+// possible system filters
+/*
+filter: {
+  comp1: true,
+
+  comp2: false,
+
+  comp3: function(entityId) {
+    return someCondition;
+  }
+}
+*/
+
+// possible system priorities
+/*
+lite.system.PRIORITY.HIGHEST
+lite.system.PRIORITY.HIGH
+lite.system.PRIORITY.NORNAL
+lite.system.PRIORITY.LOW
+lite.system.PRIORITY.LOWEST
+*/
 
 // get a system
 var Renderer = lite.system.get('renderer');
@@ -121,9 +152,9 @@ Renderer.toggle();
 // stop the update and render loops of the system
 
 /*
- * Time
+ * Time (maybe)
  */
-lite.time.dt // delta time
+lite.time.delta // delta time
 
 lite.time.current
 
@@ -145,9 +176,15 @@ lite.extension.set('globals', {
   }
 });
 
+// or
+lite.extension.set('math', function() {
+  return SomeMathLib;
+});
+
+// extension usage
 var globals = lite.extension.get('globals');
 
-globals.set('2PI', 2 * Math.PI);
-globals.get('2PI'); // => 6.283185307179586
+globals.set('myGlobal', 123456985);
+globals.get('myGlobal'); // => 123456985
 
 ```
