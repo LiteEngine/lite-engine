@@ -2,7 +2,7 @@
 /*
  * Create a Component
  */
-var entId = lite.component.create('circle', {
+lite.component.create('circle', {
   // default properties
   x: 0,
   y: 0,
@@ -10,11 +10,18 @@ var entId = lite.component.create('circle', {
 });
 
 // another component
-var entId = lite.component.create('transparent', {
+lite.component.create('transparent', {
   // default properties
   alpha: 1
 });
 
+// or
+lite.component.create('transparent', function() {
+	var comp = {};
+	comp.alpha = 1;
+	
+	return comp;
+});
 /*
  * Entity Methods
  */
