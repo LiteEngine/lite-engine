@@ -16,11 +16,11 @@ lite.component.create('transparent', {
 });
 
 // or
-lite.component.create('transparent', function() {
-	var comp = {};
-	comp.alpha = 1;
-	
-	return comp;
+lite.component.create('velocity', function() {
+	var comp = new Vector();
+	comp.x = 10;
+	comp.y = 20;
+	return comp; // returns a vector instance
 });
 /*
  * Entity Methods
