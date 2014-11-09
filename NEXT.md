@@ -42,6 +42,9 @@ var ents = lite.entity.select('*');
 // returns all entities with the components of array
 var ents = lite.entity.select(['circle', 'alpha']);
 
+// returns the entity with id == 8
+var ent = lite.entity.select(8);
+
 /*
  * Component Methods
  */
