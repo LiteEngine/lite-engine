@@ -67,30 +67,45 @@ Alpha.remove(entId);
 lite.system.create('Renderer', {
 
   priority: {
+    // see below more about priority
     update: lite.system.PRIORITY.NORMAL,
     render: lite.system.PRIORITY.HIGH,
   },
 
   filter: {
+    // see below more about the system filter 
     'circle': true,
     'position': function(entityId) {
       return true;
     }
   },
   
-  init: function(entityId) {
+  init: function() {
+    // do something when this system is initialized  
+  },
+  
+  addEntity: function(entityId) {
     // do something when an entity is added 
   },
   
-  uninit: function(entityId) {
+  removeEntity: function(entityId) {
     // do something when an entity is removed 
   },
   
-  update: function(entityId) {
-    // this is called before all render methods
+  updateSystem: function() {
+    // update method called before update each entity of system
   },
   
-  render: function(entityId) {
+  updateEntity: function(entityId) {
+    // update each entity of system
+  },
+  
+  renderSystem: function() {
+    // render method called before render each entity of system
+  },
+  
+  renderEntity: function(entityId) {
+    // render each entity of system
     var Circle = lite.component.get('circle'),
       Position = lite.component.get('position'),
       Alpha = lite.component.get('alpha'),
@@ -101,13 +116,12 @@ lite.system.create('Renderer', {
 
 		ctx.save();
 		
-		// optional component
+		// Alpha is an optional component of this system
 		if (Alpha.has(entityId) == true) {
 		  alpha = Alpha.get(entityId).value;
 		}
 		
 		ctx.globalAlpha = alpha;
-		ctx.fillStyle = '#FF0000';
 		ctx.beginPath();
 		ctx.arc(pos.x, pos.y, radius, 0, 2 * Math.PI);
 		ctx.fill();
@@ -120,10 +134,16 @@ lite.system.create('Renderer', {
 // possible system filters
 /*
 filter: {
+  // filters are a group of conditions
+  // if the entity pass on all conditions, it's added to the system
+
+  // entities WITH component comp1
   comp1: true,
 
+  // entities WITHOUT component comp1
   comp2: false,
 
+  // returns `true` to the entity passes on this condition 
   comp3: function(entityId) {
     return someCondition;
   }
@@ -142,23 +162,20 @@ lite.system.PRIORITY.LOWEST
 // get a system
 var Renderer = lite.system.get('renderer');
 
-// stop the update and render loops of the system
+// stop the ALL update and render loops of the system
 Renderer.disable();
 // or
 Renderer.enable();
 // or
 Renderer.toggle();
 
-// stop the update and render loops of the system
-
 /*
- * Time (maybe)
- */
-lite.time.delta // delta time
-
-lite.time.current
-
-lite.time.elapsed
+  Engine
+*/
+// update all systems
+lite.engine.update();
+// render all systems
+lite.engine.render();
 
 /*
  * Library Entension
@@ -177,8 +194,8 @@ lite.extension.set('globals', {
 });
 
 // or
-lite.extension.set('math', function() {
-  return SomeMathLib;
+lite.extension.set('some-ext', function() {
+  return new SomeExtension();
 });
 
 // extension usage
