@@ -4,5 +4,11 @@ Engine based on: http://entity-systems.wikidot.com/fast-entity-component-system
 
 See demos here: https://github.com/LiteEngine/Lite-Engine-examples
 
+## INSTALL
+
+```
+npm i lite-engine
+```
+
 ## LICENSE
 Public Domain ([CC0 1.0](http://creativecommons.org/publicdomain/zero/1.0/))
